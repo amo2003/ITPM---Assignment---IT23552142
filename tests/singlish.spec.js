@@ -1,0 +1,106 @@
+
+const { test, expect } = require('@playwright/test');
+
+test.describe('SwiftTranslator Singlish → Sinhala', () => {
+
+  const baseURL = 'https://www.swifttranslator.com/'; 
+
+
+  async function convertInput(page, inputText) {
+    await page.goto(baseURL);
+
+    // Fill the Singlish input box
+    await page.fill(
+      'textarea[placeholder="Input Your Singlish Text Here."]',
+      inputText
+    );
+
+    // Wait for output div to appear and have text
+    const outputLocator = page.locator('div.whitespace-pre-wrap.overflow-y-auto.bg-slate-50');
+    await outputLocator.waitFor({ state: 'visible', timeout: 5000 });
+    await expect(outputLocator).not.toHaveText('', { timeout: 5000 });
+
+    // Get the Sinhala text
+    const actual = await outputLocator.textContent();
+    return actual.trim();
+  }
+
+  //Positive Functional (24 cases) 
+  const positiveCases = [
+    { id: 'PF_001', input: 'mama office vaeda karanavaa', expected: 'මම office වැඩ කරනවා' },
+    { id: 'PF_002', input: 'api heta gedhara yamu', expected: 'අපි හෙට ගෙදර යමු' },
+    { id: 'PF_003', input: 'mama gedhara yanavaa saha passe bath kanavaa', expected: 'මම ගෙදර යනවා සහ පස්සෙ බත් කනවා' },
+    { id: 'PF_004', input: 'oya envaa nam mama balan innavaa', expected: 'ඔය එන්වා නම් මම බලන් ඉන්නවා' },
+    { id: 'PF_005', input: 'api iiyee class giyaa', expected: 'අපි ඊයේ class ගියා' },
+    { id: 'PF_006', input: 'mata eeka karanna baee', expected: 'මට ඒක කරන්න බෑ' },
+    { id: 'PF_007', input: 'oyaa adha kohomadha inne?', expected: 'ඔයා අද කොහොමද ඉන්නේ?' },
+    { id: 'PF_008', input: 'issarahata poddak yanna', expected: 'ඉස්සරහට පොඩ්ඩක් යන්න' },
+    { id: 'PF_009', input: 'karuNaakara mata podi udhavvak karanna puLuvandha?', expected: 'කරුණාකර මට පොඩි උදව්වක් කරන්න පුළුවන්ද?' },
+    { id: 'PF_010', input: 'anee eeka poddak dhenna', expected: 'අනේ ඒක පොඩ්ඩක් දෙන්න' },
+    { id: 'PF_011', input: 'suba daavasak!', expected: 'සුභ දවසක්!' },
+    { id: 'PF_012', input: 'eyaalaa adha enavaa', expected: 'එයාලා අද එනවා' },
+    { id: 'PF_013', input: 'mage meeting eka Zoom eken thiyenavaa', expected: 'mage meeting එක Zoom එකෙන් තියෙනවා' },
+    { id: 'PF_014', input: 'api Kandy valata trip ekak yamu', expected: 'අපි Kandy වලට trip එකක් යමු' },
+    { id: 'PF_015', input: 'WiFi eka adha vaeda karanne naehae', expected: 'WiFi එක අද වැඩ කරන්නේ නැහැ' },
+    { id: 'PF_016', input: 'meeka Rs. 2500 k vatinavaa', expected: 'මේක Rs. 2500 ක් වටිනවා' },
+    { id: 'PF_017', input: 'appointment eka 2026-05-21 thiyenavaa', expected: 'appointment එක 2026-05-21 තියෙනවා' },
+    { id: 'PF_018', input: 'meeting eka 7.30 AM da?', expected: 'meeting එක 7.30 AM ද?' },
+    { id: 'PF_019', input: 'mama gedhara inne', expected: 'මම ගෙදර ඉන්නේ' },
+    { id: 'PF_020', input: 'mama gedhara yanavaa. oyaa enne kavadhdha?', expected: 'මම ගෙදර යනවා. ඔයා එන්නෙ කවද්ද?' },
+    { id: 'PF_021', input: 'mata nidhimathayi', expected: 'මට නිදිමතයි' },
+    { id: 'PF_022', input: 'hari hari lassanai', expected: 'හරි හරි ලස්සනෛ' },
+    { id: 'PF_023', input: 'adha api office vaeda kala saha passe manager ekka kathaa kala', expected: 'අද අපි office වැඩ කල සහ පස්සෙ manager එක්ක කතා කල' },
+    { id: 'PF_024', input: 'hari, mama eeka karannam', expected: 'හරි, මම ඒක කරන්නම්' },
+  ];
+
+  for (const tc of positiveCases) {
+    test(`${tc.id} Positive Functional`, async ({ page }) => {
+      const actual = await convertInput(page, tc.input);
+      expect(actual).toBe(tc.expected);
+    });
+  }
+
+  //Negative Functional (10 cases)
+  const negativeCases = [
+    { id: 'NF_001', input: 'mamagedharayanavaa', expected: 'Partial or incorrect word separation' },
+    { id: 'NF_002', input: 'matapaanbonnaoonee', expected: 'Incorrect segmentation' },
+    { id: 'NF_003', input: 'hetaapiyanavaa', expected: 'Partial or incorrect word separation' },
+    { id: 'NF_004', input: 'oyaaennavadha', expected: 'Partial or incorrect word separation' },
+    { id: 'NF_005', input: 'ela machan supiriii', expected: 'Slang not converted meaningfully' },
+    { id: 'NF_006', input: 'adooo vaedak karapan', expected: 'Slang not converted meaningfully' },
+    { id: 'NF_007', input: 'dhaen api vaeda karapu kaalaya athara office saha personal prashna godak thibuna nisaa api decision ekakata enna bae una', expected: 'Partial conversion' },
+    { id: 'NF_008', input: 'mama gedhara yanavaa.\n\noyaa enne kavadhdha?', expected: 'Output formatting broken' },
+    { id: 'NF_009', input: 'Teams meeting eke URL eka WhatsApp karala evanna', expected: 'Partial conversion' },
+    { id: 'NF_010', input: 'QR code eka scan karala payment eka complete karanna', expected: 'Partial conversion' },
+  ];
+
+  for (const tc of negativeCases) {
+    test(`${tc.id} Negative Functional`, async ({ page }) => {
+      const actual = await convertInput(page, tc.input);
+      expect(actual).not.toBe(tc.expected); 
+    });
+  }
+
+  // UI Test 
+  test('UI_001 Real-time Sinhala output updates while typing', async ({ page }) => {
+    const input = 'mama gedhara yanavaa';
+    await page.goto(baseURL);
+
+    // Fill input
+    await page.fill(
+      'textarea[placeholder="Input Your Singlish Text Here."]',
+      input
+    );
+
+    // Wait for output to update dynamically
+    const outputLocator = page.locator('div.whitespace-pre-wrap.overflow-y-auto.bg-slate-50');
+    await outputLocator.waitFor({ state: 'visible', timeout: 5000 });
+    await expect(outputLocator).not.toHaveText('', { timeout: 5000 });
+
+    const output = await outputLocator.textContent();
+
+    // Expected value is correct Sinhala
+    expect(output.trim()).toBe('මම ගෙදර යනවා');
+  });
+
+});
