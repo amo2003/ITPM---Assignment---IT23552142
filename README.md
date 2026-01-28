@@ -17,7 +17,7 @@ and to identify weaknesses in translation accuracy and UI behavior.
 
 ## Installation Instructions
 1. Clone the repository
-   git clone https://github.com/amo2003/ITPM---Assignment---IT23552142/
+   git clone https://github.com/amo2003/ITPM---Assignment---IT23552142
 
 2. Navigate to the project folder
    cd Assignment_Playwright
