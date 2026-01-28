@@ -37,7 +37,7 @@ test.describe('SwiftTranslator Singlish → Sinhala', () => {
     { id: 'PF_008', input: 'issarahata poddak yanna', expected: 'ඉස්සරහට පොඩ්ඩක් යන්න' },
     { id: 'PF_009', input: 'karuNaakara mata podi udhavvak karanna puLuvandha?', expected: 'කරුණාකර මට පොඩි උදව්වක් කරන්න පුළුවන්ද?' },
     { id: 'PF_010', input: 'anee eeka poddak dhenna', expected: 'අනේ ඒක පොඩ්ඩක් දෙන්න' },
-    { id: 'PF_011', input: 'suBha dhavasak!', expected: 'සුභ දවසක්!' },
+    { id: 'PF_011', input: 'suba davasak!', expected: 'සුභ දවසක්!' },
     { id: 'PF_012', input: 'eyaalaa adha enavaa', expected: 'එයාලා අද එනවා' },
     { id: 'PF_013', input: 'mage meeting eka Zoom eken thiyenavaa', expected: 'mage meeting එක Zoom එකෙන් තියෙනවා' },
     { id: 'PF_014', input: 'api Kandy valata trip ekak yamu', expected: 'අපි Kandy වලට trip එකක් යමු' },
