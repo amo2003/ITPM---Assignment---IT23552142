@@ -62,24 +62,42 @@ test.describe('SwiftTranslator Singlish → Sinhala', () => {
 
   //Negative Functional (10 cases)
   const negativeCases = [
-    { id: 'NF_001', input: 'mamagedharayanavaa', expected: 'Partial or incorrect word separation' },
-    { id: 'NF_002', input: 'matapaanbonnaoonee', expected: 'Incorrect segmentation' },
-    { id: 'NF_003', input: 'hetaapiyanavaa', expected: 'Partial or incorrect word separation' },
-    { id: 'NF_004', input: 'oyaaennavadha', expected: 'Partial or incorrect word separation' },
-    { id: 'NF_005', input: 'ela machan supiriii', expected: 'Slang not converted meaningfully' },
-    { id: 'NF_006', input: 'adooo vaedak karapan', expected: 'Slang not converted meaningfully' },
-    { id: 'NF_007', input: 'dhaen api vaeda karapu kaalaya athara office saha personal prashna godak thibuna nisaa api decision ekakata enna bae una', expected: 'Partial conversion' },
-    { id: 'NF_008', input: 'mama gedhara yanavaa.\n\noyaa enne kavadhdha?', expected: 'Output formatting broken' },
-    { id: 'NF_009', input: 'Teams meeting eke URL eka WhatsApp karala evanna', expected: 'Partial conversion' },
-    { id: 'NF_010', input: 'QR code eka scan karala payment eka complete karanna', expected: 'Partial conversion' },
-  ];
+  { id: 'NF_001', input: 'mamagedharayanavaa', correct: 'මම ගෙදර යනවා' },
+  { id: 'NF_002', input: 'matapaanbonnaoonee', correct: 'මට පාන බොන්න ඕනේ' },
+  { id: 'NF_003', input: 'hetaapiyanavaa', correct: 'හෙට අපි යනවා' },
+  { id: 'NF_004', input: 'oyaaennavadha', correct: 'ඔයා එනවද?' },
+  { id: 'NF_005', input: 'ela machan supiriii', correct: 'එල මචං සුපිරි' },
+  { id: 'NF_006', input: 'adooo vaedak karapan', correct: 'අඩෝ වැඩක් කරපන්' },
+  {
+    id: 'NF_007',
+    input: 'dhaen api vaeda karapu kaalaya athara office saha personal prashna godak thibuna nisaa api decision ekakata enna bae una',
+    correct: 'දැන් අපි වැඩ කරපු කාලය අතර office සහ personal ප්‍රශ්න ගොඩක් තිබුණ නිසා අපි decision එකකට එන්න බැරි උනා'
+  },
+  {
+    id: 'NF_008',
+    input: 'mama gedhara yanavaa.\n\noyaa enne kavadhdha?',
+    correct: 'මම ගෙදර යනවා.\n\nඔයා එන්නේ කවද්ද?'
+  },
+  {
+    id: 'NF_009',
+    input: 'Teams meeting eke URL eka WhatsApp karala evanna',
+    correct: 'Teams meeting එකේ URL එක WhatsApp කරලා එවන්න'
+  },
+  {
+    id: 'NF_010',
+    input: 'QR code eka scan karala payment eka complete karanna',
+    correct: 'QR code එක scan කරලා payment එක complete කරන්න'
+  },
+];
 
-  for (const tc of negativeCases) {
-    test(`${tc.id} Negative Functional`, async ({ page }) => {
-      const actual = await convertInput(page, tc.input);
-      expect(actual).not.toBe(tc.expected); 
-    });
-  }
+for (const tc of negativeCases) {
+  test(`${tc.id} Negative Functional`, async ({ page }) => {
+    const actual = await convertInput(page, tc.input);
+
+    // Negative validation: system should NOT produce the correct Sinhala
+    expect(actual).not.toBe(tc.correct);
+  });
+}
 
   // UI Test 
   test('UI_001 Real-time Sinhala output updates while typing', async ({ page }) => {
