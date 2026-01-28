@@ -1,36 +1,44 @@
-# Playwright Automation – IT3040 Assignment 1
+# SwiftTranslator Singlish → Sinhala Testing
+IT3040 – ITPM Assignment 1
 
-## Prerequisites
-- Node.js (LTS recommended)
+## Project Description
+This project automates the testing of the SwiftTranslator web application
+(https://www.swifttranslator.com/) to evaluate the accuracy of converting
+Singlish input into Sinhala output.
 
-## Install
-```bash
-npm install
-```
+Playwright is used to execute positive and negative functional test cases
+and to identify weaknesses in translation accuracy and UI behavior.
 
-## Run tests
-From the project root:
+## Tools & Technologies
+- Playwright
+- Node.js
+- JavaScript
+- Chromium / Firefox / WebKit
 
-```bash
-npm test
-```
+## Installation Instructions
+1. Clone the repository
+   git clone https://github.com/amo2003/ITPM---Assignment---IT23552142
 
-Run only the Singlish suite:
+2. Navigate to the project folder
+   cd Assignment_Playwright
 
-```bash
-npm run test:singlish
-```
+3. Install dependencies
+   npm install
 
-## Debug (recommended for external sites)
-Run headed so you can see whether the site is converting in real time:
+## Run Tests
+To execute all automated test cases:
+   npx playwright test
 
-```bash
-npx playwright test --headed --project=chromium
-```
+To view the HTML report:
+   npx playwright show-report
 
-Open the HTML report:
+## Test Coverage
+- Positive functional test cases
+- Negative test cases
+- Accuracy validation of Sinhala output
+- Detection of incorrect character mappings
 
-```bash
-npm run report
-```
-
+## Notes
+Some test cases fail due to known accuracy issues in the SwiftTranslator
+system. These failures represent real defects and are documented in the
+Excel test case report.
