@@ -32,7 +32,7 @@ export default defineConfig({
     // baseURL: 'http://localhost:3000',
 
     // Run browser in headed mode so you can see SwiftTranslator while tests run
-    headless: false,
+    headless: true,
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
