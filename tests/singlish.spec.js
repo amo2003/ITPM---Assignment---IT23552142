@@ -94,12 +94,10 @@ for (const tc of negativeCases) {
   test(`${tc.id} Negative Functional`, async ({ page }) => {
     const actual = await convertInput(page, tc.input);
 
-    // Negative validation: system should NOT produce the correct Sinhala
     expect(actual).not.toBe(tc.correct);
   });
 }
 
-  // UI Test 
   test('UI_001 Real-time Sinhala output updates while typing', async ({ page }) => {
     const input = 'mama gedhara yanavaa';
     await page.goto(baseURL);
