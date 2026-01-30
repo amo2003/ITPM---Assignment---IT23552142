@@ -60,41 +60,48 @@ test.describe('SwiftTranslator Singlish → Sinhala', () => {
     });
   }
 
-  //Negative Functional (10 cases)
-  const negativeCases = [
-  { id: 'Neg_Fun_0001', input: 'mamagedharayanavaa', correct: 'මම ගෙදර යනවා' },
-  { id: 'Neg_Fun_0002', input: 'matapaanbonnaoonee', correct: 'මට පාන බොන්න ඕනේ' },
-  { id: 'Neg_Fun_0003', input: 'hetaapiyanavaa', correct: 'හෙට අපි යනවා' },
-  { id: 'Neg_Fun_0004', input: 'oyaaennavadha', correct: 'ඔයා එනවද?' },
-  { id: 'Neg_Fun_0005', input: 'ela machan supiriii', correct: 'එල මචං සුපිරි' },
-  { id: 'Neg_Fun_0006', input: 'adooo vaedak karapan', correct: 'අඩෝ වැඩක් කරපන්' },
-  {
-    id: 'Neg_Fun_0007',
-    input: 'dhaen api vaeda karapu kaalaya athara office saha personal prashna godak thibuna nisaa api decision ekakata enna bae una',
-    correct: 'දැන් අපි වැඩ කරපු කාලය අතර office සහ personal ප්‍රශ්න ගොඩක් තිබුණ නිසා අපි decision එකකට එන්න බැරි උනා'
-  },
-  {
-    id: 'Neg_Fun_0008',
-    input: 'mama gedhara yanavaa.\n\noyaa enne kavadhdha?',
-    correct: 'මම ගෙදර යනවා.\n\nඔයා එන්නේ කවද්ද?'
-  },
-  {
-    id: 'Neg_Fun_0009',
-    input: 'Teams meeting eke URL eka WhatsApp karala evanna',
-    correct: 'Teams meeting එකේ URL එක WhatsApp කරලා එවන්න'
-  },
-  {
-    id: 'Neg_Fun_0010',
-    input: 'QR code eka scan karala payment eka complete karanna',
-    correct: 'QR code එක scan කරලා payment එක complete කරන්න'
-  },
+const negativeCases = [
+  { id: 'Neg_Fun_0001', input: '', expected: 'මම ගෙදර යනවා' }, // empty input
+  { id: 'Neg_Fun_0002', input: 'abcdxyz', expected: 'මට පාන බොන්න ඕනේ' }, // gibberish
+  { id: 'Neg_Fun_0003', input: 'hetapiyy', expected: 'හෙට අපි යනවා' }, // typo
+  { id: 'Neg_Fun_0004', input: 'oyaaenndvadha???', expected: 'ඔයා එනවද?' }, // extra chars
+  { id: 'Neg_Fun_0005', input: 'elamachan!!!supiriii', expected: 'එල මචං සුපිරි' },
+  { id: 'Neg_Fun_0006', input: 'ad0000 vaedak karapan', expected: 'අඩෝ වැඩක් කරපන්' },
+  { id: 'Neg_Fun_0007', input: 'dhaen api vaeda !! office personal prashna', expected: 'දැන් අපි වැඩ කරපු කාලය අතර office සහ personal ප්‍රශ්න ගොඩක් තිබුණ නිසා අපි decision එකකට එන්න බැරි උනා' },
+  { id: 'Neg_Fun_0008', input: 'mama yanna\n\noya?', expected: 'මම ගෙදර යනවා.\n\nඔයා එන්නේ කවද්ද?' },
+  { id: 'Neg_Fun_0009', input: 'WhatsApp link ekak Teams meeting ekata', expected: 'Teams meeting එකේ URL එක WhatsApp කරලා එවන්න' },
+  { id: 'Neg_Fun_0010', input: 'QR payment scan ekak', expected: 'QR code එක scan කරලා payment එක complete කරන්න' },
 ];
 
-for (const tc of negativeCases) {
-  test(`${tc.id} Negative Functional`, async ({ page }) => {
-    const actual = await convertInput(page, tc.input);
+for (const scenario of negativeCases) {
+  test(`${scenario.id}: ${scenario.name}`, async ({ page }) => {
+    // 1. Navigate to the site
+    await page.goto('https://www.swifttranslator.com/');
 
-    expect(actual).not.toBe(tc.correct);
+    // 2. Select the input area
+    const inputArea = page.getByPlaceholder('Input Your Singlish Text Here.');
+    
+    // 3. Type the "wrong" input
+    if (scenario.input !== '') {
+        await inputArea.pressSequentially(scenario.input, { delay: 30 });
+    } else {
+        await inputArea.fill('');
+    }
+
+    // 4. Locate the output div
+    const outputDiv = page.locator('div.whitespace-pre-wrap.overflow-y-auto').first();
+
+    // 5. Wait for translation
+    await page.waitForTimeout(2000);
+    
+    const actualOutput = (await outputDiv.innerText()).trim();
+    console.log(`TC ID: ${scenario.id} | Input: "${scenario.input}" | Actual: "${actualOutput}"`);
+
+    // 6. Capture screenshot
+    await page.screenshot({ path: `screenshots/${scenario.id}.png` });
+
+    // 7. Assertion
+    expect(actualOutput).toBe(scenario.expected);
   });
 }
 
