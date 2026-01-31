@@ -48,7 +48,7 @@ test.describe('SwiftTranslator Singlish → Sinhala', () => {
     { id: 'Pos_Fun_0019', input: 'mama gedhara inne', expected: 'මම ගෙදර ඉන්නේ' },
     { id: 'Pos_Fun_0020', input: 'mama gedhara yanavaa. oyaa enne kavadhdha?', expected: 'මම ගෙදර යනවා. ඔයා එන්නෙ කවද්ද?' },
     { id: 'Pos_Fun_0021', input: 'mata nidhimathayi', expected: 'මට නිදිමතයි' },
-    { id: 'Pos_Fun_0022', input: 'hari hari lassanai', expected: 'හරි හරි ලස්සනෛ' },
+    { id: 'Pos_Fun_0022', input: 'hari hari lassanayi', expected: 'හරි හරි ලස්සනයි' },
     { id: 'Pos_Fun_0023', input: 'adha api office vaeda kala saha passe manager ekka kathaa kala', expected: 'අද අපි office වැඩ කල සහ පස්සෙ manager එක්ක කතා කල' },
     { id: 'Pos_Fun_0024', input: 'hari, mama eeka karannam', expected: 'හරි, මම ඒක කරන්නම්' },
   ];
