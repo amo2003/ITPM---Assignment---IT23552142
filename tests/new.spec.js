@@ -136,6 +136,7 @@ test.describe('SwiftTranslator Singlish → Sinhala (from Excel) - V3', () => {
   { id: 'Neg_Fun_0009', input: 'WhatsApp link ekak Teams meeting ekata', expected: 'Teams meeting එකේ URL එක WhatsApp කරලා එවන්න' },
   { id: 'Neg_Fun_0010', input: 'QR payment scan ekak', expected: 'QR code එක scan කරලා payment එක complete කරන්න' },
 
+    // UI Positive 1
   { id: 'Pos_UI_0035', input: 'mama gedhara yanavaa ', expected: 'Sinhala output should update automatically while typing and display: මම ගෙදර යනවා ' }
   ];
 
